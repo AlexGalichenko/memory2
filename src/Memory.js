@@ -1,13 +1,19 @@
 const KEY_REGEXP = /^\$(.+?)(\((.*)\))?$/;
-
+const PARSE_STRING_REGEXP = /({\$.+})/g;
 const PARAMS_SPLIT_REGEXP = /\s*,\s*/;
 const QUOTES_REPLACE_REGEXP = /^['"]|['"]$/g;
 const STRING_TYPE_REGEXP = /^'.+'|".+"$/;
-const NUMBER_TYPE_REGEXP = /^\d+|\d+\.\d+$/;  
+const NUMBER_TYPE_REGEXP = /^\d+|\d+\.\d+$/;
 
 class Memory {
 
     getValue(str) {
+        if (KEY_REGEXP.test(str)) return this.getKey(str)
+        if (PARSE_STRING_REGEXP.test(str)) return this.getString(str)
+        return str
+    }
+
+    getKey(str) {
         const keyMatch = str.match(KEY_REGEXP);
         const key = keyMatch ? keyMatch[1] : null;
         if (key) {
@@ -18,7 +24,11 @@ class Memory {
             }
             return this[key]
         }
-        return str;
+    }
+
+    getString(str) {
+        const matches = str.match(PARSE_STRING_REGEXP).map(match => match.replace(/{|}/g, ``));
+        return matches.reduce((string, variable) => string.replace(`{${variable}}`, this.getKey(variable)), str);
     }
 
     getComputedParams(str) {
