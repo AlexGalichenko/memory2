@@ -13,6 +13,10 @@ class Memory {
         return str
     }
 
+    setValue(key, value) {
+        this[key] = value;
+    }
+
     getKey(str) {
         const keyMatch = str.match(KEY_REGEXP);
         const key = keyMatch ? keyMatch[1] : null;
