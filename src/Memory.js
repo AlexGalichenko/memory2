@@ -1,5 +1,5 @@
 const KEY_REGEXP = /^\$(.+?)(\((.*)\))?$/;
-const PARSE_STRING_REGEXP = /({\$.+})/g;
+const PARSE_STRING_REGEXP = /({\$.+?})/g;
 const PARAMS_SPLIT_REGEXP = /\s*,\s*/;
 const QUOTES_REPLACE_REGEXP = /^['"]|['"]$/g;
 const STRING_TYPE_REGEXP = /^'.+'|".+"$/;
